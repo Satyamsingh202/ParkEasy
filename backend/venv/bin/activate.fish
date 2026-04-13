@@ -29,7 +29,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/satyamkumarsingh/Desktop/Hackathons/Hackachinno 2/backend/venv"
+set -gx VIRTUAL_ENV "/Users/satyamkumarsingh/Desktop/Hackathons/Hackachinno 3/ParkEasy/backend/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH

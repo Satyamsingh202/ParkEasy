@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/Users/satyamkumarsingh/Desktop/Hackathons/Hackachinno 2/backend/venv"
+VIRTUAL_ENV="/Users/satyamkumarsingh/Desktop/Hackathons/Hackachinno 3/ParkEasy/backend/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
