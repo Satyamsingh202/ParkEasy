@@ -2,6 +2,30 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+# ---- User Schemas ----
+
+class UserCreate(BaseModel):
+    username: str
+    full_name: str
+    email: str
+    phone: str
+
+class UserLogin(BaseModel):
+    email: str
+    phone: str
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    full_name: str
+    email: str
+    phone: str
+
+    class Config:
+        orm_mode = True
+
+# ---- Parking Schemas ----
+
 class ParkingCreate(BaseModel):
     location: str
     type: str  # free / paid / emergency

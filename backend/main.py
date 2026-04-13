@@ -18,6 +18,43 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# ---- User Auth Endpoints ----
+
+@app.post("/signup", response_model=schemas.UserResponse)
+def signup(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    existing = db.query(models.User).filter(models.User.email == user.email).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    new_user = models.User(
+        username=user.username,
+        full_name=user.full_name,
+        email=user.email,
+        phone=user.phone
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+@app.post("/login", response_model=schemas.UserResponse)
+def login(credentials: schemas.UserLogin, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(
+        models.User.email == credentials.email,
+        models.User.phone == credentials.phone
+    ).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="Invalid email or phone number")
+    return user
+
+@app.get("/user/{id}", response_model=schemas.UserResponse)
+def get_user(id: int, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.id == id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return user
+
+# ---- Parking Endpoints ----
+
 @app.post("/parking", response_model=schemas.ParkingResponse)
 def create_parking(parking: schemas.ParkingCreate, db: Session = Depends(get_db)):
     new_parking = models.Parking(

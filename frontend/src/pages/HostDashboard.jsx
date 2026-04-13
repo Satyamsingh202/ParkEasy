@@ -52,6 +52,7 @@ const HostDashboard = () => {
   };
 
   return (
+    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
         <h2 className="text-3xl font-bold text-slate-800">Host Dashboard</h2>
@@ -149,6 +150,7 @@ const HostDashboard = () => {
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };
