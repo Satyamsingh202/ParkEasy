@@ -13,6 +13,7 @@ class ParkingResponse(BaseModel):
     type: str
     total_slots: int
     available_slots: int
+    distance_km: Optional[float] = None
 
     class Config:
         orm_mode = True

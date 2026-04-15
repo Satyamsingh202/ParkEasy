@@ -7,6 +7,12 @@ export const getParkingLots = async () => {
     return response.data;
 };
 
+export const searchParkingLots = async (location = '') => {
+    const params = location ? { location } : {};
+    const response = await axios.get(`${API_BASE_URL}/parking`, { params });
+    return response.data;
+};
+
 export const createParkingLot = async (data) => {
     const response = await axios.post(`${API_BASE_URL}/parking`, data);
     return response.data;

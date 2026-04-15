@@ -32,8 +32,11 @@ def create_parking(parking: schemas.ParkingCreate, db: Session = Depends(get_db)
     return new_parking
 
 @app.get("/parking", response_model=list[schemas.ParkingResponse])
-def get_all_parking(db: Session = Depends(get_db)):
-    return db.query(models.Parking).all()
+def get_all_parking(location: str = None, db: Session = Depends(get_db)):
+    query = db.query(models.Parking)
+    if location:
+        query = query.filter(models.Parking.location.ilike(f"%{location}%"))
+    return query.all()
 
 @app.get("/parking/{id}", response_model=schemas.ParkingResponse)
 def get_parking(id: int, db: Session = Depends(get_db)):
