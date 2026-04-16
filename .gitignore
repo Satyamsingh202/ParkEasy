@@ -1,2 +1,6 @@
-frontend/nodejs/
 node_modules/
+frontend/nodejs/
+venv/
+.env
+dist/
+build/
