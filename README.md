@@ -80,14 +80,15 @@ ParkEasy/
    cd backend
    ```
 
-2. Create and activate virtual environment:
+2. Create and activate a Python virtual environment:
    ```bash
-   python -m venv venv
+   python3 -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. Install dependencies:
+3. Upgrade pip and install dependencies:
    ```bash
+   pip install --upgrade pip
    pip install fastapi uvicorn sqlalchemy pydantic
    ```
 
@@ -112,7 +113,7 @@ The API will be available at `http://localhost:8001`
 
 3. Start the development server:
    ```bash
-   npm run dev
+   npm run dev -- --host 0.0.0.0 --port 5173
    ```
 
 The frontend will be available at `http://localhost:5173`
