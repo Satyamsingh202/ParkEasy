@@ -2,6 +2,30 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+# ---- User Schemas ----
+
+class UserCreate(BaseModel):
+    username: str
+    full_name: str
+    email: str
+    phone: str
+
+class UserLogin(BaseModel):
+    email: str
+    phone: str
+
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    full_name: str
+    email: str
+    phone: str
+
+    class Config:
+        from_attributes = True
+
+# ---- Parking Schemas ----
+
 class ParkingCreate(BaseModel):
     location: str
     type: str  # free / paid / emergency
@@ -16,7 +40,7 @@ class ParkingResponse(BaseModel):
     distance_km: Optional[float] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class BookingCreate(BaseModel):
     parking_id: int
@@ -28,4 +52,4 @@ class BookingResponse(BaseModel):
     qr_payload: Optional[str] = None
 
     class Config:
-        orm_mode = True
+        from_attributes = True

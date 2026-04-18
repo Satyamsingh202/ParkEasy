@@ -1,6 +1,26 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8001';
+const API_BASE_URL = 'http://127.0.0.1:8001';
+
+
+// ---- Auth API ----
+
+export const signupUser = async (data) => {
+    const response = await axios.post(`${API_BASE_URL}/signup`, data);
+    return response.data;
+};
+
+export const loginUser = async (data) => {
+    const response = await axios.post(`${API_BASE_URL}/login`, data);
+    return response.data;
+};
+
+export const getUser = async (id) => {
+    const response = await axios.get(`${API_BASE_URL}/user/${id}`);
+    return response.data;
+};
+
+// ---- Parking API ----
 
 export const getParkingLots = async () => {
     const response = await axios.get(`${API_BASE_URL}/parking`);
@@ -12,6 +32,7 @@ export const searchParkingLots = async (location = '') => {
     const response = await axios.get(`${API_BASE_URL}/parking`, { params });
     return response.data;
 };
+
 
 export const createParkingLot = async (data) => {
     const response = await axios.post(`${API_BASE_URL}/parking`, data);
