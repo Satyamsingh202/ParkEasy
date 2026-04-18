@@ -18,6 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+<<<<<<< HEAD
 # ---- User Auth Endpoints ----
 
 @app.post("/signup", response_model=schemas.UserResponse)
@@ -55,6 +56,8 @@ def get_user(id: int, db: Session = Depends(get_db)):
 
 # ---- Parking Endpoints ----
 
+=======
+>>>>>>> main
 @app.post("/parking", response_model=schemas.ParkingResponse)
 def create_parking(parking: schemas.ParkingCreate, db: Session = Depends(get_db)):
     new_parking = models.Parking(
@@ -69,8 +72,16 @@ def create_parking(parking: schemas.ParkingCreate, db: Session = Depends(get_db)
     return new_parking
 
 @app.get("/parking", response_model=list[schemas.ParkingResponse])
+<<<<<<< HEAD
 def get_all_parking(db: Session = Depends(get_db)):
     return db.query(models.Parking).all()
+=======
+def get_all_parking(location: str = None, db: Session = Depends(get_db)):
+    query = db.query(models.Parking)
+    if location:
+        query = query.filter(models.Parking.location.ilike(f"%{location}%"))
+    return query.all()
+>>>>>>> main
 
 @app.get("/parking/{id}", response_model=schemas.ParkingResponse)
 def get_parking(id: int, db: Session = Depends(get_db)):

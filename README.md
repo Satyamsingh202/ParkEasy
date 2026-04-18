@@ -1,7 +1,6 @@
 # ParkEasy
 
 A smart parking management system that allows hosts to list parking spaces and clients to discover, book, and access parking spots using QR codes — with built-in user authentication.
-
 ## Features
 
 - **User Authentication**: Sign up and log in with email & phone — session persists via localStorage.
@@ -11,6 +10,7 @@ A smart parking management system that allows hosts to list parking spaces and c
 - **QR Code Access**: Upon booking, clients receive a unique QR code that serves as their parking pass.
 - **Real-time Availability**: System tracks available slots and updates in real-time after bookings.
 - **Responsive Design**: Modern, mobile-friendly interface built with React and Tailwind CSS.
+
 
 ## Tech Stack
 

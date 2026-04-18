@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const API_BASE_URL = 'http://localhost:8001';
 
+
 // ---- Auth API ----
 
 export const signupUser = async (data) => {
@@ -25,6 +26,13 @@ export const getParkingLots = async () => {
     const response = await axios.get(`${API_BASE_URL}/parking`);
     return response.data;
 };
+
+export const searchParkingLots = async (location = '') => {
+    const params = location ? { location } : {};
+    const response = await axios.get(`${API_BASE_URL}/parking`, { params });
+    return response.data;
+};
+
 
 export const createParkingLot = async (data) => {
     const response = await axios.post(`${API_BASE_URL}/parking`, data);

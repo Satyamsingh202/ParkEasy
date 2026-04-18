@@ -1,8 +1,28 @@
+# Node
 node_modules/
-frontend/nodejs/
 frontend/node_modules/
-*.tar.gz
+frontend/nodejs/
+
+# Python
+venv/
+backend/venv/
 __pycache__/
 *.pyc
-venv/
+
+# Env files
+.env
+frontend/.env
+backend/.env
+
+# Build files
+dist/
+build/
+
+# OS / system
 .DS_Store
+
+# Database
+*.db
+
+# Logs
+*.log
