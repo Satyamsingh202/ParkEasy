@@ -1,28 +1,11 @@
-# Node
 node_modules/
 frontend/node_modules/
 frontend/nodejs/
-
-# Python
 venv/
-backend/venv/
 __pycache__/
 *.pyc
-
-# Env files
+*.db
 .env
-frontend/.env
-backend/.env
-
-# Build files
+.DS_Store
 dist/
 build/
-
-# OS / system
-.DS_Store
-
-# Database
-*.db
-
-# Logs
-*.log

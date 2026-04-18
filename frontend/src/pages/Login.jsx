@@ -1,25 +1,32 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { loginUser } from '../api';
+import { useAuth } from '../hooks/AuthContext';
+import { loginUser } from '../services/api';
 import { Mail, Phone, LogIn, ArrowRight, Sparkles } from 'lucide-react';
 
+// Login page — authenticates user via email + phone against the backend
 const Login = () => {
   const navigate = useNavigate();
+  // Pull the login function from auth context to persist the session
   const { login } = useAuth();
+  // Controlled form state matching the backend UserLogin schema
   const [form, setForm] = useState({ email: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Submit login credentials to the backend and persist user on success
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
+      // POST to /login — returns the full user object if credentials match
       const user = await loginUser(form);
+      // Store user in context + localStorage for session persistence
       login(user);
       navigate('/client');
     } catch (err) {
+      // Display backend validation message or a generic fallback
       setError(err.response?.data?.detail || 'Login failed. Please check your credentials.');
     } finally {
       setLoading(false);

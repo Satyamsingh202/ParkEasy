@@ -1,5 +1,5 @@
 
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './hooks/AuthContext';
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
@@ -12,10 +12,13 @@ import HostDashboard from './pages/HostDashboard';
 import ClientDashboard from './pages/ClientDashboard';
 import Sidebar from './components/Sidebar';
 
+// Top-level application node mapping routes to individual views
 function App() {
+  // Drives the state of the shared off-canvas Sidebar behavior
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
+    // Encapsulate app routing in an AuthProvider so all routes inherit session state
     <AuthProvider>
       <Router>
         <div className="min-h-screen font-sans bg-slate-50 text-slate-800">

@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { searchParkingLots, createBooking } from '../api';
+import { useAuth } from '../hooks/AuthContext';
+import { searchParkingLots, createBooking } from '../services/api';
 import SearchBar from '../components/SearchBar';
 import ParkingCard from '../components/ParkingCard';
 import QRModal from '../components/QRModal';
 import { Car, ShieldCheck, User, QrCode, Zap, MapPin, ArrowRight, Sparkles, Clock, Search, DollarSign, Shield, LayoutGrid } from 'lucide-react';
 
+// Primary landing page combining hero, search, results grid, features, and role selection
 const Home = () => {
   const navigate = useNavigate();
+  // Determine whether to show auth CTAs or the logged-in experience
   const { isLoggedIn } = useAuth();
 
-  // Search & Booking State
+  // Stores the array of parking lots fetched from the backend
   const [parkingLots, setParkingLots] = useState([]);
+  // Tracks whether a search API call is currently in-flight
   const [isLoading, setIsLoading] = useState(false);
+  // Distinguishes initial load from an explicit user search
   const [hasSearched, setHasSearched] = useState(false);
+  // The current text in the search bar for re-fetching after booking
   const [searchQuery, setSearchQuery] = useState('');
+  // Controls the QR code modal visibility after a successful booking
   const [modalOpen, setModalOpen] = useState(false);
+  // JSON string passed to the QR code generator component
   const [qrPayload, setQrPayload] = useState(null);
+  // Holds the lot ID currently being booked to show per-card loading state
   const [bookingLoading, setBookingLoading] = useState(null);
+  // True until the first fetch completes — drives the initial spinner
   const [initialLoad, setInitialLoad] = useState(true);
+  // Filters the results grid by parking type (all/free/paid/emergency)
   const [typeFilter, setTypeFilter] = useState('all');
 
   // Features Data
@@ -57,11 +67,12 @@ const Home = () => {
     { key: 'emergency', label: 'Emergency', icon: Shield, colors: 'bg-red-50 text-red-700 border-red-200 hover:bg-red-100', active: 'bg-red-600 text-white border-red-600 shadow-lg shadow-red-600/25' },
   ];
 
-  // Load all parking on mount
+  // Pre-fetch all available parking spaces when the page first renders
   useEffect(() => {
     loadAllParking();
   }, []);
 
+  // Fetch all parking data from backend without any location filter
   const loadAllParking = async () => {
     try {
       const data = await searchParkingLots('');
@@ -73,6 +84,7 @@ const Home = () => {
     }
   };
 
+  // Triggered by the SearchBar component when user submits a location query
   const handleSearch = async (query) => {
     setSearchQuery(query);
     setIsLoading(true);
@@ -87,12 +99,15 @@ const Home = () => {
     }
   };
 
+  // Books a slot, shows QR on success, and re-fetches to update availability counts
   const handleBook = async (lotId) => {
     setBookingLoading(lotId);
     try {
       const res = await createBooking(lotId);
+      // Open the QR modal with the booking payload from the backend
       setQrPayload(res.qr_payload);
       setModalOpen(true);
+      // Re-fetch parking data to reflect the decremented slot count
       const data = await searchParkingLots(searchQuery);
       setParkingLots(data);
     } catch (err) {
@@ -102,10 +117,12 @@ const Home = () => {
     }
   };
 
+  // Apply the type filter pill selection to narrow displayed results
   const filteredLots = typeFilter === 'all'
     ? parkingLots
     : parkingLots.filter(l => l.type?.toLowerCase() === typeFilter);
 
+  // Compute summary statistics shown above the results grid
   const stats = {
     total: parkingLots.length,
     free: parkingLots.filter(l => l.type?.toLowerCase() === 'free').length,

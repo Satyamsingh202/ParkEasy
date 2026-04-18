@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { signupUser } from '../api';
+import { useAuth } from '../hooks/AuthContext';
+import { signupUser } from '../services/api';
 import { UserPlus, Mail, Phone, User, ArrowRight, BadgeCheck } from 'lucide-react';
 
+// Registration page — creates a new user and auto-logs them in on success
 const Signup = () => {
   const navigate = useNavigate();
+  // After registration succeeds, auto-login the user without a second request
   const { login } = useAuth();
+  // Controlled form matching the backend UserCreate schema fields
   const [form, setForm] = useState({
     username: '',
     full_name: '',
@@ -16,15 +19,19 @@ const Signup = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Register user on backend, then persist the returned user object locally
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
+      // POST to /signup — backend returns the created user object
       const user = await signupUser(form);
+      // Immediately establish a session so the user doesn't need to login again
       login(user);
       navigate('/client');
     } catch (err) {
+      // Show duplicate-email or validation errors from FastAPI
       setError(err.response?.data?.detail || 'Sign up failed. Please try again.');
     } finally {
       setLoading(false);

@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { getParkingLots, createBooking } from '../api';
+import { getParkingLots, createBooking } from '../services/api';
 import QRModal from '../components/QRModal';
 import { MapPin, Search, Ticket, Car, Filter } from 'lucide-react';
 
+// Client-facing dashboard where users browse, filter, and book parking slots
 const ClientDashboard = () => {
+  // All parking lots fetched from the backend
   const [parkingLots, setParkingLots] = useState([]);
+  // Active filter category (all/free/paid/emergency)
   const [filter, setFilter] = useState('all');
+  // QR modal state — opens after a successful booking
   const [modalOpen, setModalOpen] = useState(false);
   const [qrPayload, setQrPayload] = useState(null);
+  // Tracks which lot is currently being booked to show per-card spinner
   const [bookingLoading, setBookingLoading] = useState(null);
 
+  // Fetch all parking lots on initial mount
   useEffect(() => {
     fetchParkingLots();
   }, []);
 
+  // Pull the full parking inventory from the backend
   const fetchParkingLots = async () => {
     try {
       const data = await getParkingLots();
@@ -23,13 +30,14 @@ const ClientDashboard = () => {
     }
   };
 
+  // Book a specific lot, show QR on success, then refresh availability data
   const handleBook = async (lotId) => {
     setBookingLoading(lotId);
     try {
       const res = await createBooking(lotId);
       setQrPayload(res.qr_payload);
       setModalOpen(true);
-      fetchParkingLots(); // refresh counts
+      fetchParkingLots(); // refresh availability counts
     } catch (err) {
       alert(err.response?.data?.detail || 'Booking failed');
     } finally {
@@ -37,10 +45,12 @@ const ClientDashboard = () => {
     }
   };
 
+  // Client-side filter — applied instantly without a new API call
   const filteredLots = parkingLots.filter(lot => 
     filter === 'all' ? true : lot.type.toLowerCase() === filter
   );
 
+  // Map parking types to Tailwind badge color classes
   const getTypeColor = (type) => {
     switch (type.toLowerCase()) {
       case 'free': return 'bg-emerald-100 text-emerald-800 border-emerald-200';

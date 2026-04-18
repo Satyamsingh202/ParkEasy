@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getParkingLots, createParkingLot } from '../api';
+import { getParkingLots, createParkingLot } from '../services/api';
 import { PlusCircle, MapPin, Hash, CheckCircle2 } from 'lucide-react';
 
+// Host-facing dashboard for managing parking space listings
 const HostDashboard = () => {
+  // Stores all parking lots owned/managed by the host
   const [parkingLots, setParkingLots] = useState([]);
+  // Controlled form state for creating a new parking space
   const [formData, setFormData] = useState({
     location: '',
     type: 'free',
@@ -11,10 +14,12 @@ const HostDashboard = () => {
   });
   const [loading, setLoading] = useState(false);
 
+  // Load existing parking lot data on component mount
   useEffect(() => {
     fetchParkingLots();
   }, []);
 
+  // Fetch all parking lots from the backend
   const fetchParkingLots = async () => {
     try {
       const data = await getParkingLots();
@@ -24,14 +29,17 @@ const HostDashboard = () => {
     }
   };
 
+  // Submit a new parking space to the backend via POST /parking
   const handleAdd = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       await createParkingLot({
         ...formData,
+        // Ensure total_slots is sent as an integer, not a string from the input
         total_slots: parseInt(formData.total_slots)
       });
+      // Reset form to defaults after successful creation
       setFormData({ location: '', type: 'free', total_slots: 10 });
       fetchParkingLots();
     } catch (err) {

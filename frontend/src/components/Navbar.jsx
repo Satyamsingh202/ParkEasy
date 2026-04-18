@@ -1,14 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/AuthContext';
 import { User, LogOut, ChevronDown, Car } from 'lucide-react';
 
+// Sticky top navigation bar with conditional auth UI (avatar dropdown vs login/signup)
 const Navbar = () => {
+  // Pull session state from global auth context
   const { user, isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
+  // Controls the profile dropdown menu visibility
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  // Ref used to detect clicks outside the dropdown to auto-close it
   const dropdownRef = useRef(null);
 
+  // Attach a global click listener to close the dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
@@ -19,6 +24,7 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Clear auth session and redirect to landing page
   const handleLogout = () => {
     logout();
     setDropdownOpen(false);

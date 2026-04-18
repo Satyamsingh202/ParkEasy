@@ -1,17 +1,20 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/AuthContext';
 import { User, Mail, Phone, BadgeCheck, LogOut, Car, ArrowLeft } from 'lucide-react';
 
+// Displays the authenticated user's profile details with a logout option
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
+  // Guard: redirect unauthenticated users to the login page
   if (!user) {
     navigate('/login');
     return null;
   }
 
+  // Wipe auth state and send user back to the landing page
   const handleLogout = () => {
     logout();
     navigate('/');
