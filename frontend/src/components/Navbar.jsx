@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { User, LogOut, ChevronDown, Car } from 'lucide-react';
 
 const Navbar = () => {
   const { user, isLoggedIn, logout } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
 

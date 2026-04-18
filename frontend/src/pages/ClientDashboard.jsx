@@ -51,10 +51,7 @@ const ClientDashboard = () => {
   };
 
   return (
-<<<<<<< HEAD
     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-=======
->>>>>>> main
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div>
         <h2 className="text-3xl font-bold text-slate-800 flex items-center gap-3">
@@ -145,10 +142,7 @@ const ClientDashboard = () => {
         qrPayload={qrPayload} 
       />
     </div>
-<<<<<<< HEAD
     </div>
-=======
->>>>>>> main
   );
 };
 

@@ -1,20 +1,19 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     const stored = localStorage.getItem('parkEasyUser');
     if (stored) {
       try {
-        setUser(JSON.parse(stored));
+        return JSON.parse(stored);
       } catch {
         localStorage.removeItem('parkEasyUser');
       }
     }
-  }, []);
+    return null;
+  });
 
   const login = (userData) => {
     setUser(userData);
@@ -33,6 +32,7 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');

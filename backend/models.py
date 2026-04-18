@@ -2,7 +2,6 @@ from sqlalchemy import Column, Integer, String, DateTime
 import datetime
 from database import Base
 
-<<<<<<< HEAD
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
@@ -11,8 +10,6 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     phone = Column(String)
 
-=======
->>>>>>> main
 class Parking(Base):
     __tablename__ = "parking"
     id = Column(Integer, primary_key=True, index=True)
